@@ -1,0 +1,3 @@
+template-file-path: aws/cloudformation/network.yml
+parameters: {}
+tags: {}
