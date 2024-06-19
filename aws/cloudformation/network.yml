@@ -8,6 +8,7 @@ Parameters:
   Env:
     Type: String
     Default: test
+    Description: Env Name
 
 Resources:
 # ------------------------------------------------------------#

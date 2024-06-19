@@ -15,7 +15,7 @@ on:
 env:
   CFN_TEMPLATE: network.yml
   CFN_STACK_NAME: network-stack
-  CFN_System: cicd-handson
+  CFN_SYSTEM: cicd-handson
   CFN_ENV: test
   AWS_REGION: ap-northeast-1
 
