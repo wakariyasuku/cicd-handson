@@ -1,5 +1,0 @@
-template-file-path: aws/cloudformation/ecr.yml
-parameters:
-  System: cicd-handson
-  Env: test
-tags: {}
