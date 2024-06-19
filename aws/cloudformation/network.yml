@@ -4,8 +4,10 @@ Description: Network template
 Parameters:
   System:
     Type: String
+    Description: System name   
   Env:
     Type: String
+    Description: Env name    
 
 Resources:
 # ------------------------------------------------------------#
