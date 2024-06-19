@@ -1,0 +1,9 @@
+template-file-path: aws/cloudformation/network.yml
+Parameters:
+  System:
+    Type: String
+    Default: cicd-handson
+  Env:
+    Type: String
+    Default: test
+tags: {}
