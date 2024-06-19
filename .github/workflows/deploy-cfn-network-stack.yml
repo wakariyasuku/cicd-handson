@@ -19,12 +19,12 @@ env:
   CFN_ENV: test
   AWS_REGION: ap-northeast-1
 
-permissions:
-  id-token: write  
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
+    permissions:
+      id-token: write  
 
     steps:
     - name: Checkout repository

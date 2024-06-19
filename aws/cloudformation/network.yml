@@ -5,12 +5,9 @@ Parameters:
   System:
     Type: String
     Default: cicd-handson
-    Description: system name
   Env:
     Type: String
     Default: test
-    Description: env name
-
 
 Resources:
 # ------------------------------------------------------------#
