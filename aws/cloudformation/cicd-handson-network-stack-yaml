@@ -1,4 +1,4 @@
-template-file-path: aws/cloudformation/network.yml
+template-file-path: aws/cloudformation/ecr.yml
 parameters:
   System: cicd-handson
   Env: test
