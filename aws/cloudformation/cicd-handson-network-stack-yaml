@@ -1,5 +1,5 @@
 template-file-path: aws/cloudformation/network.yml
-Parameters:
+parameters:
   System: cicd-handson
   Env: test
 tags: {}
