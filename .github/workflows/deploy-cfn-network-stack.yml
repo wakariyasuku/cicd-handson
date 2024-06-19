@@ -14,7 +14,7 @@ on:
 
 env:
   CFN_TEMPLATE: network.yml
-  CFN_STACK_NAME: network.yml
+  CFN_STACK_NAME: network-stack
   CFN_System: cicd-handson
   CFN_ENV: test
   AWS_REGION: ap-northeast-1
@@ -24,7 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     
     permissions:
-      id-token: write  
+      id-token: write
+      contents: read
 
     steps:
     - name: Checkout repository
