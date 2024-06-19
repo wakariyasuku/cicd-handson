@@ -4,10 +4,10 @@ Description: Network template
 Parameters:
   System:
     Type: String
-    Default: cicd-handson
+    default: cicd-handson
   Env:
     Type: String
-    Default: test
+    default: test
 
 Resources:
 # ------------------------------------------------------------#

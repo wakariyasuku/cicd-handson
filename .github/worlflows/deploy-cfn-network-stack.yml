@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'aws/cloudformation/network.yml' 
+    # paths:
+    #   - 'aws/cloudformation/network.yml' 
   pull_request:
     branches:
       - main
-    paths:
-      - 'aws/cloudformation/network.yml' 
+    # paths:
+    #   - 'aws/cloudformation/network.yml' 
 
 env:
   CFN_TEMPLATE: network.yml
