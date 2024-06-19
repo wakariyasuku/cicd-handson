@@ -1,6 +1,12 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Network template
 
+Parameters:
+  System:
+    Type: String
+  Env:
+    Type: String
+
 Resources:
 # ------------------------------------------------------------#
 # VPC・Subnet
