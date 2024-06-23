@@ -4,10 +4,10 @@ Description: ECR template
 Parameters:
   System:
     Type: String
-    default: cicd-handson
+    Default: cicd-handson
   Env:
     Type: String
-    default: test
+    Default: test
 
 Resources:
   ECRRepository:
