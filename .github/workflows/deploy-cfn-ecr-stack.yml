@@ -1,0 +1,48 @@
+name: Deploy CloudFormation ecr Stack
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'aws/cloudformation/ecr.yml' 
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'aws/cloudformation/ecr.yml' 
+
+env:
+  CFN_TEMPLATE: ecr.yml
+  CFN_STACK_NAME: ecr-stack
+  CFN_SYSTEM: cicd-handson
+  CFN_ENV: test
+  AWS_REGION: ap-northeast-1
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS Credential
+      uses: aws-actions/configure-aws-credentials@v4
+      with: 
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Deploy CloudFormation stack
+      run: |
+        aws cloudformation deploy \
+          --template-file aws/cloudformation/${{ env.CFN_TEMPLATE }} \
+          --stack-name ${{ env.CFN_STACK_NAME }} \
+          --capabilities CAPABILITY_NAMED_IAM \
+          --parameter-overrides \
+            System=${{ env.CFN_SYSTEM }} \
+            Env=${{ env.CFN_ENV }}
