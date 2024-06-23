@@ -20,4 +20,3 @@ Resources:
       ImageScanningConfiguration:
         ScanOnPush: true
       ImageTagMutability: IMMUTABLE
-
