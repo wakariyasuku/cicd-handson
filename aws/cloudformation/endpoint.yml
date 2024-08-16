@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Endpoint template
+
+Parameters:
+  VpcId:
+    Type: String
+    Default: vpc-xxxxxxxxx
+  PrivateSubnetA:
+    Type: String
+    Default: subnet-xxxxxxxxx
+  PrivateSubnetC:
+    Type: String
+    Default: subnet-xxxxxxxxx
+  EndpointSecurityGroup:
+    Type: String
+    Default: sg-xxxxxxxxx
+
+Resources:
+  S3VPCEndpoint:
+    Type: "AWS::EC2::VPCEndpoint"
+    Properties:
+        VpcEndpointType: "Gateway"
+        VpcId: !Ref VpcId
+        ServiceName: !Sub "com.amazonaws.${AWS::Region}.s3"
+        PrivateDnsEnabled: true
+  ECRApiVPCEndpoint:
+    Type: "AWS::EC2::VPCEndpoint"
+    Properties:
+        VpcEndpointType: "Interface"
+        VpcId: !Ref VpcId
+        ServiceName: !Sub "com.amazonaws.${AWS::Region}.ecr.api"
+        SubnetIds: 
+          - !Ref PrivateSubnetA
+          - !Ref PrivateSubnetC
+        PrivateDnsEnabled: true
+        SecurityGroupIds: 
+          - !Ref EndpointSecurityGroup
+  ECRDkrVPCEndpoint:
+    Type: "AWS::EC2::VPCEndpoint"
+    Properties:
+        VpcEndpointType: "Interface"
+        VpcId: !Ref VpcId
+        ServiceName: !Sub "com.amazonaws.${AWS::Region}.ecr.dkr"
+        SubnetIds: 
+          - !Ref PrivateSubnetA 
+          - !Ref PrivateSubnetC 
+        PrivateDnsEnabled: true
+        SecurityGroupIds: 
+          - !Ref SecurityGroup
+  CloudwatchLogsVPCEndpoint:
+    Type: "AWS::EC2::VPCEndpoint"
+    Properties:
+        VpcEndpointType: "Interface"
+        VpcId: !Ref VpcId
+        ServiceName: !Sub "com.amazonaws.${AWS::Region}.logs"
+        SubnetIds: 
+          - !Ref PrivateSubnetA 
+          - !Ref PrivateSubnetC 
+        PrivateDnsEnabled: true
+        SecurityGroupIds: 
+          - !Ref SecurityGroup
+  CloudwatchMonitoringEC2VPCEndpoint:
+    Type: "AWS::EC2::VPCEndpoint"
+    Properties:
+        VpcEndpointType: "Interface"
+        VpcId: !Ref VpcId
+        ServiceName: !Sub "com.amazonaws.${AWS::Region}.monitoring"
+        SubnetIds: 
+          - !Ref PrivateSubnetA 
+          - !Ref PrivateSubnetC 
+        PrivateDnsEnabled: true
+        SecurityGroupIds: 
+          - !Ref SecurityGroup
