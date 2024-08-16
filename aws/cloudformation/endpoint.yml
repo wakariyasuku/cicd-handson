@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: 2010-09-09
 Description: Endpoint template
 
 Parameters:
@@ -46,7 +46,7 @@ Resources:
           - !Ref PrivateSubnetC 
         PrivateDnsEnabled: true
         SecurityGroupIds: 
-          - !Ref SecurityGroup
+          - !Ref EndpointSecurityGroup
   CloudwatchLogsVPCEndpoint:
     Type: "AWS::EC2::VPCEndpoint"
     Properties:
@@ -58,7 +58,7 @@ Resources:
           - !Ref PrivateSubnetC 
         PrivateDnsEnabled: true
         SecurityGroupIds: 
-          - !Ref SecurityGroup
+          - !Ref EndpointSecurityGroup
   CloudwatchMonitoringEC2VPCEndpoint:
     Type: "AWS::EC2::VPCEndpoint"
     Properties:
@@ -70,4 +70,4 @@ Resources:
           - !Ref PrivateSubnetC 
         PrivateDnsEnabled: true
         SecurityGroupIds: 
-          - !Ref SecurityGroup
+          - !Ref EndpointSecurityGroup
