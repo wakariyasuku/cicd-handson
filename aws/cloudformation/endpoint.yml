@@ -22,7 +22,7 @@ Resources:
         VpcEndpointType: "Gateway"
         VpcId: !Ref VpcId
         ServiceName: !Sub "com.amazonaws.${AWS::Region}.s3"
-        PrivateDnsEnabled: true
+        PrivateDnsEnabled: false #must be false if it is gateway type
   ECRApiVPCEndpoint:
     Type: "AWS::EC2::VPCEndpoint"
     Properties:
