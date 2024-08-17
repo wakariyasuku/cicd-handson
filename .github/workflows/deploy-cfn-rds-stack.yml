@@ -1,0 +1,60 @@
+name: Deploy CloudFormation rds Stack
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'aws/cloudformation/rds.yml' 
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'aws/cloudformation/rds.yml' 
+
+env:
+  CFN_TEMPLATE: rds.yml
+  CFN_STACK_NAME: rds-stack
+  CFN_SYSTEM: cicd-handson
+  CFN_ENV: test  
+  CFN_PRIVATE_SUBNET_RDS01: subnet-0cb828cb2f27f0251
+  CFN_PRIVATE_SUBNET_RDS02: subnet-0ca65ce2234282771
+  CFN_Security_Group: sg-024b895707dff238c
+  CFN_DBName: diary_db
+  CFN_InstanceType: db.t3.small
+  CFN_EngineVersion: 16.3
+  AWS_REGION: ap-northeast-1
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS Credential
+      uses: aws-actions/configure-aws-credentials@v4
+      with: 
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Deploy CloudFormation stack
+      run: |
+        aws cloudformation deploy \
+          --template-file aws/cloudformation/${{ env.CFN_TEMPLATE }} \
+          --stack-name ${{ env.CFN_STACK_NAME }} \
+          --capabilities CAPABILITY_NAMED_IAM \
+          --parameter-overrides \
+            System=${{ env.CFN_SYSTEM }} \
+            Env=${{ env.CFN_ENV }} \           
+            PrivateSubnetRDS01=${{ env.CFN_PRIVATE_SUBNET_RDS01 }} \
+            PrivateSubnetRDS02=${{ env.CFN_PRIVATE_SUBNET_RDS02 }} \
+            RDSSecurityGroup=${{ env.CFN_SECURITY_GROUP }} \
+            DBName=${{ env.CFN_DBName }} \
+            InstanceType=${{ env.CFN_InstanceType }} \
+            EngineVersion=${{ env.CFN_EngineVersion }}
