@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: RDS template
+
+Parameters:
+  System:
+    Type: String
+    Default: cicd-handson
+  Env:
+    Type: String
+    Default: test
+  EngineVersion:
+    Type: Number
+    Default: 16.3
+  InstanceType:
+    Type: String
+    Default: db.t3.small
+  DBName:
+    Type: String
+    Default: diary_db
+  PrivateSubnetRDS01:
+    Type: String
+    Default: subnet-xxxxxxxxxx
+  PrivateSubnetRDS02:
+    Type: String
+    Default: subnet-xxxxxxxxxx
+  RDSSecurityGroup:
+    Type: String
+    Default: sg-xxxxxxxxx
+
+Resources:
+    DBSubnetGroup:
+        Type: "AWS::RDS::DBSubnetGroup"
+        Properties:
+            DBSubnetGroupName: !Sub '${System}-${Env}-rdssubnetgroup'
+            DBSubnetGroupDescription: !Sub '${System}-${Env}-subnet-group'
+            SubnetIds: 
+              - !Ref PrivateSubnetRDS01
+              - !Ref PrivateSubnetRDS02
+
+    DBParameterGroup:
+        Type: "AWS::RDS::DBParameterGroup"
+        Properties:
+              DBParameterGroupName: !Sub '${System}-${Env}-parameter-group'
+              Description: !Sub '${System}-${Env}-parameter-group'
+              Family: Postgres16
+              Parameters:
+                log_connections: "1"
+                log_disconnections: "1"
+                log_lock_waits: "1"
+
+    DBInstance:
+        Type: "AWS::RDS::DBInstance"
+        Properties:
+            DBInstanceIdentifier: !Sub '${System}-${Env}-rds'
+            DBInstanceClass: !Ref InstanceType
+            Engine: "postgres"
+            EngineVersion: !Ref EngineVersion
+            MasterUsername: '{{resolve:secretsmanager:arn:aws:secretsmanager:ap-northeast-1:622632352793:secret:diary-rds-credential-kH9daE:SecretString:username}}'
+            MasterUserPassword: '{{resolve:secretsmanager:arn:aws:secretsmanager:ap-northeast-1:622632352793:secret:diary-rds-credential-kH9daE:SecretString:password}}'
+            AvailabilityZone: ap-northeast-1a"
+            Port: 5432
+            DBName: !Ref DBName
+            MultiAZ: false
+            BackupRetentionPeriod: 7
+            AutoMinorVersionUpgrade: false
+            LicenseModel: "postgresql-license"
+            Iops: 1000
+            PubliclyAccessible: false
+            StorageType: "gp3"
+            StorageEncrypted: true
+            MonitoringInterval: 0
+            EnablePerformanceInsights: false
+            DBSubnetGroupName:  !Ref DBSubnetGroup
+            VPCSecurityGroups:  
+              - !Ref  RDSSecurityGroup
+            AllocatedStorage: 100
+            MaxAllocatedStorage: 300
+            DBParameterGroupName: !Ref DBParameterGroup
+            OptionGroupName: "default:postgres-16"
+            CACertificateIdentifier: "rds-ca-rsa4096-g1"
+            EnableCloudwatchLogsExports: 
+              - postgresql
