@@ -54,7 +54,7 @@ jobs:
             Env=${{ env.CFN_ENV }} \
             PrivateSubnetRDS01=${{ env.CFN_PRIVATE_SUBNET_RDS01 }} \
             PrivateSubnetRDS02=${{ env.CFN_PRIVATE_SUBNET_RDS02 }} \
-            RDSSecurityGroup=${{ env.CFN_SECURITY_GROUP }} \
+            RDSSecurityGroup=${{ env.CFN_Security_Group }} \
             DBName=${{ env.CFN_DBName }} \
             InstanceType=${{ env.CFN_InstanceType }} \
             EngineVersion=${{ env.CFN_EngineVersion }}
