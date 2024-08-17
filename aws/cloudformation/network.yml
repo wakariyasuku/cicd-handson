@@ -35,6 +35,20 @@ Resources:
       CidrBlock: 10.0.1.0/24
       VpcId: !Ref VPC
 
+  PublicSubnet10:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1a
+      CidrBlock: 10.0.10.0/24
+      VpcId: !Ref VPC
+
+  PublicSubnet11:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1c
+      CidrBlock: 10.0.11.0/24
+      VpcId: !Ref VPC      
+
   PrivateSubnet01:
     Type: AWS::EC2::Subnet
     Properties:
@@ -48,20 +62,6 @@ Resources:
       AvailabilityZone: ap-northeast-1c
       CidrBlock: 10.0.3.0/24
       VpcId: !Ref VPC
-
-  PrivateSubnet10:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone: ap-northeast-1a
-      CidrBlock: 10.0.10.0/24
-      VpcId: !Ref VPC
-
-  PrivateSubnet11:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone: ap-northeast-1c
-      CidrBlock: 10.0.11.0/24
-      VpcId: !Ref VPC      
 
   PrivateSubnetRDS01:
     Type: AWS::EC2::Subnet
@@ -241,6 +241,4 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub '${System}-${Env}-public-Nat-Gateway'
-    DependsOn:
-      - PublicSubnet10
-      - ElaticIPForNatGateway
+
