@@ -51,7 +51,7 @@ jobs:
           --capabilities CAPABILITY_NAMED_IAM \
           --parameter-overrides \
             System=${{ env.CFN_SYSTEM }} \
-            Env=${{ env.CFN_ENV }} \           
+            Env=${{ env.CFN_ENV }} \
             PrivateSubnetRDS01=${{ env.CFN_PRIVATE_SUBNET_RDS01 }} \
             PrivateSubnetRDS02=${{ env.CFN_PRIVATE_SUBNET_RDS02 }} \
             RDSSecurityGroup=${{ env.CFN_SECURITY_GROUP }} \
