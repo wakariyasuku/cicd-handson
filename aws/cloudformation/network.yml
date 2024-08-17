@@ -143,7 +143,7 @@ Resources:
       RouteTableId:
         Ref: PrivateRoutetable
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NatGatweay
+      NatGatewayId: !Ref NatGateweay
 
   PrivateRtAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
