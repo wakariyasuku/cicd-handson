@@ -49,6 +49,20 @@ Resources:
       CidrBlock: 10.0.3.0/24
       VpcId: !Ref VPC
 
+  PrivateSubnet10:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1a
+      CidrBlock: 10.0.10.0/24
+      VpcId: !Ref VPC
+
+  PrivateSubnet11:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1c
+      CidrBlock: 10.0.11.0/24
+      VpcId: !Ref VPC      
+
   PrivateSubnetRDS01:
     Type: AWS::EC2::Subnet
     Properties:
@@ -106,10 +120,30 @@ Resources:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet02
 
+  PublicRtAssociation10:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet10
+
+  PublicRtAssociation11:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet11
+
   PrivateRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
+
+  PrivateRouteTableRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: PrivateRoutetable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref: NatGatweay
 
   PrivateRtAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -190,3 +224,20 @@ Resources:
           IpProtocol: tcp
           ToPort: 443
       VpcId: !Ref VPC
+
+# ------------------------------------------------------------#
+# Nat Gateway
+# ------------------------------------------------------------# 
+  ElasticIPForNatGateway:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: !Ref VPC
+
+  NatGateway:
+    Type: 'AWS::EC2::NatGateway'
+    Properties:
+      AllocationId: !Ref ElasticIPForNatGateway
+      SubnetId: !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: !Sub '${System}-${Env}-public-Nat-Gateway'
