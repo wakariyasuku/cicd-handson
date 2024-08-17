@@ -241,3 +241,6 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub '${System}-${Env}-public-Nat-Gateway'
+    DependsOn:
+      - PublicSubnet10
+      - ElaticIPForNatGateway
