@@ -49,6 +49,20 @@ Resources:
       CidrBlock: 10.0.3.0/24
       VpcId: !Ref VPC
 
+  PrivateSubnetRDS01:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1a
+      CidrBlock: 10.0.4.0/24
+      VpcId: !Ref VPC      
+
+  PrivateSubnetRDS02:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1c
+      CidrBlock: 10.0.5.0/24
+      VpcId: !Ref VPC
+
 # ------------------------------------------------------------#
 # Internet Gateway
 # ------------------------------------------------------------# 
@@ -109,6 +123,18 @@ Resources:
       RouteTableId: !Ref PrivateRouteTable
       SubnetId: !Ref PrivateSubnet02
 
+  PrivateRtAssociation3:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnetRDS01
+
+  PrivateRtAssociation2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnetRDS02
+
 # ------------------------------------------------------------#
 # Security Group
 # ------------------------------------------------------------# 
@@ -134,6 +160,18 @@ Resources:
           IpProtocol: tcp
           SourceSecurityGroupId: !Ref ALBSG
           ToPort: 8501
+      VpcId: !Ref VPC
+
+  RDSSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: RDS SG
+      GroupName: rds-sg
+      SecurityGroupIngress:
+        - FromPort: 5432
+          IpProtocol: tcp
+          SourceSecurityGroupId: !Ref ECSSG
+          ToPort: 5432
       VpcId: !Ref VPC
 
   VPCEndpointSG:
