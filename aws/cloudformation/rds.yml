@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: "2010-09-09"
 Description: RDS template
 
 Parameters:
@@ -57,7 +57,7 @@ Resources:
             EngineVersion: !Ref EngineVersion
             MasterUsername: '{{resolve:secretsmanager:arn:aws:secretsmanager:ap-northeast-1:622632352793:secret:diary-rds-credential-kH9daE:SecretString:username}}'
             MasterUserPassword: '{{resolve:secretsmanager:arn:aws:secretsmanager:ap-northeast-1:622632352793:secret:diary-rds-credential-kH9daE:SecretString:password}}'
-            AvailabilityZone: ap-northeast-1a"
+            AvailabilityZone: ap-northeast-1a
             Port: 5432
             DBName: !Ref DBName
             MultiAZ: false
