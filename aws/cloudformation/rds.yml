@@ -64,7 +64,7 @@ Resources:
             BackupRetentionPeriod: 7
             AutoMinorVersionUpgrade: false
             LicenseModel: "postgresql-license"
-            Iops: 1000
+            # Iops: 1000 # Can't specify IOPS or storage throughput for engine postgres and a storage size less than 400. 
             PubliclyAccessible: false
             StorageType: "gp3"
             StorageEncrypted: true
