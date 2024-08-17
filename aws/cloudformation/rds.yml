@@ -72,7 +72,7 @@ Resources:
             EnablePerformanceInsights: false
             DBSubnetGroupName:  !Ref DBSubnetGroup
             VPCSecurityGroups:  
-              - !Ref  RDSSecurityGroup
+              - !Ref RDSSecurityGroup
             AllocatedStorage: 100
             MaxAllocatedStorage: 300
             DBParameterGroupName: !Ref DBParameterGroup
