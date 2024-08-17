@@ -237,7 +237,7 @@ Resources:
     Type: 'AWS::EC2::NatGateway'
     Properties:
       AllocationId: !Ref ElasticIPForNatGateway
-      SubnetId: !Ref PublicSubnet1
+      SubnetId: !Ref PublicSubnet10
       Tags:
         - Key: Name
           Value: !Sub '${System}-${Env}-public-Nat-Gateway'
