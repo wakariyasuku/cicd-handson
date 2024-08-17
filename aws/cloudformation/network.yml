@@ -141,9 +141,9 @@ Resources:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId:
-        Ref: PrivateRoutetable
+        Ref: PrivateRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NatGateweay
+      NatGatewayId: !Ref NatGateway
 
   PrivateRtAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
