@@ -77,6 +77,13 @@ Resources:
       CidrBlock: 10.0.5.0/24
       VpcId: !Ref VPC
 
+  PrivateSubnetVPN01:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1a
+      CidrBlock: 10.0.12.0/24
+      VpcId: !Ref VPC            
+
 # ------------------------------------------------------------#
 # Internet Gateway
 # ------------------------------------------------------------# 
@@ -163,12 +170,17 @@ Resources:
       RouteTableId: !Ref PrivateRouteTable
       SubnetId: !Ref PrivateSubnetRDS01
 
-  PrivateRtAssociation2:
+  PrivateRtAssociation4:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref PrivateRouteTable
       SubnetId: !Ref PrivateSubnetRDS02
 
+  PrivateRtAssociation12:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnetVPN01
 # ------------------------------------------------------------#
 # Security Group
 # ------------------------------------------------------------# 
@@ -194,6 +206,16 @@ Resources:
           IpProtocol: tcp
           SourceSecurityGroupId: !Ref ALBSG
           ToPort: 8501
+        - FromPort: 22
+          IpProtocol: tcp
+          SourceSecurityGroupId: !Ref VPNSG
+          ToPort: 22
+        - FromPort: 443
+          IpProtocol: tcp
+          SourceSecurityGroupId: !Ref VPNSG
+          ToPort: 443 
+        - IpProtocol: -1  # Allows all traffic
+          CidrIp: 0.0.0.0/0  # From any IP address          
       VpcId: !Ref VPC
 
   RDSSG:
@@ -205,7 +227,7 @@ Resources:
         - FromPort: 5432
           IpProtocol: tcp
           SourceSecurityGroupId: !Ref ECSSG
-          ToPort: 5432
+          ToPort: 5432                  
       VpcId: !Ref VPC
 
   VPCEndpointSG:
@@ -224,6 +246,22 @@ Resources:
           IpProtocol: tcp
           ToPort: 443
       VpcId: !Ref VPC
+
+  VPNSG:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Client VPN SG
+      GroupName: client-vpn-sg
+      VpcId: !Ref VPC
+      SecurityGroupEgress:
+        - CidrIp: 10.0.2.0/23
+          FromPort: 22
+          IpProtocol: tcp
+          ToPort: 22
+        - CidrIp: 10.0.2.0/23
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
 
 # ------------------------------------------------------------#
 # Nat Gateway
