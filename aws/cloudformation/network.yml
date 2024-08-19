@@ -170,7 +170,7 @@ Resources:
       RouteTableId: !Ref PrivateRouteTable
       SubnetId: !Ref PrivateSubnetRDS01
 
-  PrivateRtAssociation4:
+  PrivateRtAssociation2:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref PrivateRouteTable
