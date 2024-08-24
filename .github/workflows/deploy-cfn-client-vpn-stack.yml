@@ -48,7 +48,7 @@ jobs:
           --parameter-overrides \
             System=${{ env.CFN_SYSTEM }} \
             Env=${{ env.CFN_ENV }} \
-            VpcId=${{ secrets.CFN_VPC_ID }} \            
+            VpcId=${{ secrets.CFN_VPC_ID }} \
             PrivateSubnetVPN01=${{ env.CFN_PRIVATE_SUBNET_VPN01 }} \
             ServerCertificate=${{ secrets.CFN_Server_Certificate }} \
             ClientCertificate=${{ secrets.CFN_Client_Certificate }} \
