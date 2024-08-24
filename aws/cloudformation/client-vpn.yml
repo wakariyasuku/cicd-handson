@@ -43,10 +43,13 @@ Resources:
             ClientRootCertificateChainArn: !Ref ClientCertificate
       VpnPort: 443
       VpcId: !Ref VpcId
-      SecurityGroupIds: !Ref VPNSecurityGroup
+      SecurityGroupIds:
+        - !Ref VPNSecurityGroup
       SplitTunnel: true
       ClientConnectOptions:
         Enabled: false
+      ConnectionLogOptions: # must be set
+        Enabled: false        
 
   ClientVpnTargetNetworkAssociation:
     Type: AWS::EC2::ClientVpnTargetNetworkAssociation
