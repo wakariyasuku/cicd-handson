@@ -29,7 +29,8 @@ Resources:
     Type: 'AWS::EC2::NetworkInterface'
     Properties:
       SubnetId: !Ref PrivateSubnetVPN01
-      GroupSet: !Ref VPNSecurityGroup
+      GroupSet: 
+        - !Ref VPNSecurityGroup
 
   ClientVpnEndpoint:
     Type: 'AWS::EC2::ClientVpnEndpoint'
