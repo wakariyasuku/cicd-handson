@@ -262,8 +262,8 @@ Resources:
           FromPort: 443
           IpProtocol: tcp
           ToPort: 443
-        - CidrIp: 0.0.0.0/0  # From any IP address            
-          IpProtocol: -1  # Allows all traffic
+        # - CidrIp: 0.0.0.0/0  # From any IP address            
+        #   IpProtocol: -1  # Allows all traffic
 
 # ------------------------------------------------------------#
 # Nat Gateway
