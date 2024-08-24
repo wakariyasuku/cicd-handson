@@ -214,8 +214,8 @@ Resources:
           IpProtocol: tcp
           SourceSecurityGroupId: !Ref VPNSG
           ToPort: 443 
-        - IpProtocol: -1  # Allows all traffic
-          CidrIp: 0.0.0.0/0  # From any IP address          
+        # - IpProtocol: -1  # Allows all traffic
+        #   CidrIp: 0.0.0.0/0  # From any IP address          
       VpcId: !Ref VPC
 
   RDSSG:
