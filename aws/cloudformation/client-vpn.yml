@@ -51,6 +51,14 @@ Resources:
       ConnectionLogOptions: # must be set
         Enabled: false        
 
+  myAuthRule:
+    Type: "AWS::EC2::ClientVpnAuthorizationRule"
+    Properties:
+      ClientVpnEndpointId: 
+        Ref: ClientVpnEndpoint
+      AuthorizeAllGroups: true
+      TargetNetworkCidr: "10.0.0.0/16"
+
   ClientVpnTargetNetworkAssociation:
     Type: AWS::EC2::ClientVpnTargetNetworkAssociation
     Properties: 
