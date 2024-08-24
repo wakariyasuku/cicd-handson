@@ -1,0 +1,55 @@
+name: Deploy CloudFormation client-vpn Stack
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'aws/cloudformation/client-vpn.yml' 
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'aws/cloudformation/client-vpn.yml' 
+
+env:
+  CFN_TEMPLATE: client-vpn.yml
+  CFN_STACK_NAME: client-vpn-stack
+  CFN_SYSTEM: cicd-handson
+  CFN_ENV: test  
+  CFN_PRIVATE_SUBNET_VPN01: subnet-0ae610d18d9740035
+  CFN_Security_Group: sg-0561eb7a1c97701de
+  AWS_REGION: ap-northeast-1
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS Credential
+      uses: aws-actions/configure-aws-credentials@v4
+      with: 
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Deploy CloudFormation stack
+      run: |
+        aws cloudformation deploy \
+          --template-file aws/cloudformation/${{ env.CFN_TEMPLATE }} \
+          --stack-name ${{ env.CFN_STACK_NAME }} \
+          --capabilities CAPABILITY_NAMED_IAM \
+          --parameter-overrides \
+            System=${{ env.CFN_SYSTEM }} \
+            Env=${{ env.CFN_ENV }} \
+            VpcId=${{ secrets.CFN_VPC_ID }} \            
+            PrivateSubnetVPN01=${{ env.CFN_PRIVATE_SUBNET_VPN01 }} \
+            ServerCertificate=${{ secrets.CFN_Server_Certificate }} \
+            ClientCertificate=${{ secrets.CFN_Client_Certificate }} \
+            VPNSecurityGroup=${{ env.CFN_Security_Group }}
