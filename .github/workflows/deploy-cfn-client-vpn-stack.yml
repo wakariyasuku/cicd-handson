@@ -18,7 +18,7 @@ env:
   CFN_SYSTEM: cicd-handson
   CFN_ENV: test  
   CFN_PRIVATE_SUBNET_VPN01: subnet-0ae610d18d9740035
-  CFN_Security_Group: sg-0561eb7a1c97701de
+  CFN_Security_Group: sg-0ea0602debf3ec368
   AWS_REGION: ap-northeast-1
 
 permissions:
