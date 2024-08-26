@@ -5,7 +5,8 @@ FROM python:3.11
 WORKDIR /app
 
 # 必要なパッケージをインストール
-RUN pip install streamlit pandas tabulate
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # アプリケーションのソースコードをコピー
 COPY app.py .
