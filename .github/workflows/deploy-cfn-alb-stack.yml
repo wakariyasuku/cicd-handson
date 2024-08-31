@@ -17,8 +17,8 @@ env:
   CFN_STACK_NAME: alb-stack
   CFN_SYSTEM: cicd-handson
   CFN_ENV: test  
-  CFN_PRIVATE_SUBNET_A: subnet-09d7b4586cf6b18a1
-  CFN_PRIVATE_SUBNET_C: subnet-05acda47c5c3ccc65
+  CFN_PUBLIC_SUBNET_A: subnet-09d7b4586cf6b18a1
+  CFN_PUBLIC_SUBNET_C: subnet-05acda47c5c3ccc65
   CFN_Security_Group: sg-0c5cd20058a03fa92
   AWS_REGION: ap-northeast-1
 
@@ -50,6 +50,6 @@ jobs:
             System=${{ env.CFN_SYSTEM }} \
             Env=${{ env.CFN_ENV }} \
             VpcId=${{ secrets.CFN_VPC_ID }} \
-            PrivateSubnetA=${{ env.CFN_PRIVATE_SUBNET_A }} \
-            PrivateSubnetC=${{ env.CFN_PRIVATE_SUBNET_C }} \
+            PublicSubnetA=${{ env.CFN_PUBLIC_SUBNET_A }} \
+            PublicSubnetC=${{ env.CFN_PUBLIC_SUBNET_C }} \
             SecurityGroup=${{ env.CFN_Security_Group }}
