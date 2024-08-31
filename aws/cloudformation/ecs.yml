@@ -1,0 +1,144 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: ECS template
+
+Parameters:
+  System:
+    Type: String
+    Default: cicd-handson
+  Env:
+    Type: String
+    Default: test
+  TargetGroupArn:
+    Type: String
+    Default: arn    
+  SecurityGroup:
+    Type: String
+    Default: sg-xxxxxxxxx    
+  PrivateSubnetA:
+    Type: String
+    Default: subnet-xxxxxxxxx    
+  PrivateSubnetC:
+    Type: String
+    Default: subnet-xxxxxxxxx
+  image:
+    Type: String
+    Default: cicd-handson-test-ecr-repository    
+  version:
+    Type: String  
+    Default: streamlit-transform-app-latest
+
+Resources:
+  # ------------------------------------------------------------#
+  # CloudWatch Logs
+  # ------------------------------------------------------------# 
+  ECSLogGroup:
+    Type: "AWS::Logs::LogGroup"
+    Properties:
+      LogGroupName: !Sub "/ecs/logs/${System}-${Env}-log"
+
+  # ------------------------------------------------------------#
+  # IAM Roles and Policies
+  # ------------------------------------------------------------# 
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      RoleName: !Sub ${System}-${Env}-task-execution-role
+
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      RoleName: !Sub ${System}-${Env}-task-role
+
+  TaskRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: 
+              - "ssmmessages:CreateControlChannel"
+              - "ssmmessages:CreateDataChannel"
+              - "ssmmessages:OpenControlChannel"
+              - "ssmmessages:OpenDataChannel"
+            Resource: '*'
+      PolicyName: !Sub ${System}-${Env}-task-role-policy
+      Roles:
+        - !Ref TaskRole
+
+  # ------------------------------------------------------------#
+  # ECS Resources
+  # ------------------------------------------------------------# 
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      CapacityProviders:
+        - FARGATE
+      ClusterName: !Sub ${System}-${Env}-ecs-cluster
+      DefaultCapacityProviderStrategy:
+        - CapacityProvider: FARGATE
+          Weight: 1
+
+  ECSTaskDef:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Name: !Sub ${System}-${Env}-ecs-task
+          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${image}:${version}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options: 
+              awslogs-group: !Ref ECSLogGroup
+              awslogs-stream-prefix: !Sub "${System}-${Env}-log"
+              awslogs-region: !Ref "AWS::Region"
+          PortMappings:
+            - ContainerPort: 8501 #streamlitコンテナのポートが8501のため
+              HostPort: 80
+      Cpu: 256
+      Memory: 512
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      TaskRoleArn: !Ref TaskRole
+      Family: !Sub ${System}-${Env}-task-def
+
+  ECSService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref ECSCluster
+      ServiceName: !Sub ${System}-${Env}-service
+      TaskDefinition: !Ref ECSTaskDef
+      DesiredCount: 1
+      EnableExecuteCommand: true
+      LoadBalancers:
+        - ContainerName: !Ref ContainerDefinitions
+          ContainerPort: 8501
+          TargetGroupArn: !Ref TargetGroupArn
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          SecurityGroups:
+            - !Ref SecurityGroup
+          Subnets:
+            - !Ref PrivateSubnetA
+            - !Ref PrivateSubnetC
