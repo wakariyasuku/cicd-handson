@@ -49,7 +49,7 @@ jobs:
           --parameter-overrides \
             System=${{ env.CFN_SYSTEM }} \
             Env=${{ env.CFN_ENV }} \
-            VpcId=${{ secrets.CFN_VPC_ID }} \            
+            VpcId=${{ secrets.CFN_VPC_ID }} \
             PrivateSubnetA=${{ env.CFN_PRIVATE_SUBNET_A }} \
             PrivateSubnetC=${{ env.CFN_PRIVATE_SUBNET_C }} \
             SecurityGroup=${{ env.CFN_Security_Group }}
