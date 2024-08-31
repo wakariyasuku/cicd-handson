@@ -52,7 +52,7 @@ jobs:
           --parameter-overrides \
             System=${{ env.CFN_SYSTEM }} \
             Env=${{ env.CFN_ENV }} \
-            TargetGroupArn=${{ env.TARGET_GROUP_ARN }} \
+            TargetGroupArn=${{ env.CFN_TARGET_GROUP_ARN }} \
             PrivateSubnetA=${{ env.CFN_PRIVATE_SUBNET_A }} \
             PrivateSubnetC=${{ env.CFN_PRIVATE_SUBNET_C }} \
             SecurityGroup=${{ env.CFN_Security_Group }} \
