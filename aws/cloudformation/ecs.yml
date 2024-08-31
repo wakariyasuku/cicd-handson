@@ -113,7 +113,7 @@ Resources:
               awslogs-region: !Ref "AWS::Region"
           PortMappings:
             - ContainerPort: 8501 #streamlitコンテナのポートが8501のため
-              HostPort: 80
+              HostPort: 8501
       Cpu: 256
       Memory: 512
       NetworkMode: awsvpc
