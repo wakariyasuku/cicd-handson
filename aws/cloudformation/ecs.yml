@@ -127,12 +127,12 @@ Resources:
     Type: AWS::ECS::Service
     Properties:
       Cluster: !Ref ECSCluster
-      ServiceName: !Sub ${System}-${Env}-service
+      ServiceName: !Sub ${System}-${Env}-ecs-service
       TaskDefinition: !Ref ECSTaskDef
       DesiredCount: 1
       EnableExecuteCommand: true
       LoadBalancers:
-        - ContainerName: !Ref ContainerDefinitions
+        - ContainerName: !Sub ${System}-${Env}-ecs-task
           ContainerPort: 8501
           TargetGroupArn: !Ref TargetGroupArn
       NetworkConfiguration:
