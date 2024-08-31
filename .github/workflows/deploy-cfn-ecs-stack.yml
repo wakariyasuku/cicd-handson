@@ -1,0 +1,61 @@
+name: Deploy CloudFormation ecs Stack
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'aws/cloudformation/ecs.yml' 
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'aws/cloudformation/ecs.yml' 
+
+env:
+  CFN_TEMPLATE: ecs.yml
+  CFN_STACK_NAME: ecs-stack
+  CFN_SYSTEM: cicd-handson
+  CFN_ENV: test  
+  CFN_TARGET_GROUP_ARN: arn:aws:elasticloadbalancing:ap-northeast-1:622632352793:targetgroup/cicd-handson-test-alb-tg/f722b5bbb3c59f46
+  CFN_PRIVATE_SUBNET_A: subnet-0de0cca5078a7c982
+  CFN_PRIVATE_SUBNET_C: subnet-0e91df063442f4fce
+  CFN_Security_Group: sg-0b8064e805aab51bb
+  CFN_IMAGE: cicd-handson-test-ecr-repository
+  CFN_VERSION: streamlit-transform-app-latest
+  AWS_REGION: ap-northeast-1
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS Credential
+      uses: aws-actions/configure-aws-credentials@v4
+      with: 
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Deploy CloudFormation stack
+      run: |
+        aws cloudformation deploy \
+          --template-file aws/cloudformation/${{ env.CFN_TEMPLATE }} \
+          --stack-name ${{ env.CFN_STACK_NAME }} \
+          --capabilities CAPABILITY_NAMED_IAM \
+          --parameter-overrides \
+            System=${{ env.CFN_SYSTEM }} \
+            Env=${{ env.CFN_ENV }} \
+            TargetGroupArn=${{ env.TARGET_GROUP_ARN }} \
+            PrivateSubnetA=${{ env.CFN_PRIVATE_SUBNET_A }} \
+            PrivateSubnetC=${{ env.CFN_PRIVATE_SUBNET_C }} \
+            SecurityGroup=${{ env.CFN_Security_Group }} \
+            image=${{ env.CFN_IMAGE }} \
+            version=${{ env.CFN_VERSION }} 
+
