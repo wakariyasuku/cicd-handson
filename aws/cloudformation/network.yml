@@ -137,6 +137,9 @@ Resources:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-public-route-table      
 
   PublicRouteTableRoute:
     Type: AWS::EC2::Route
@@ -173,6 +176,9 @@ Resources:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-public-private-table                
 
   PrivateRouteTableRoute:
     Type: AWS::EC2::Route
@@ -243,9 +249,7 @@ Resources:
         - FromPort: 443
           IpProtocol: tcp
           SourceSecurityGroupId: !Ref VPNSG
-          ToPort: 443 
-        # - IpProtocol: -1  # Allows all traffic
-        #   CidrIp: 0.0.0.0/0  # From any IP address          
+          ToPort: 443        
       VpcId: !Ref VPC
 
   RDSSG:
