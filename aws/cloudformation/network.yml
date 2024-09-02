@@ -20,6 +20,9 @@ Resources:
       CidrBlock: 10.0.0.0/16
       EnableDnsSupport: true
       EnableDnsHostnames: true
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-vpc      
 
   PublicSubnet01: # alb
     Type: AWS::EC2::Subnet
@@ -27,6 +30,9 @@ Resources:
       AvailabilityZone: ap-northeast-1a
       CidrBlock: 10.0.0.0/24
       VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-public-subnet-alb-1      
 
   PublicSubnet02: # alb
     Type: AWS::EC2::Subnet
@@ -34,6 +40,9 @@ Resources:
       AvailabilityZone: ap-northeast-1c
       CidrBlock: 10.0.1.0/24
       VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-public-subnet-alb-2
 
   PublicSubnet10: # public nat
     Type: AWS::EC2::Subnet
@@ -41,6 +50,9 @@ Resources:
       AvailabilityZone: ap-northeast-1a
       CidrBlock: 10.0.10.0/24
       VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-public-subnet-nat-gateway-1      
 
   PublicSubnet11: # public nat
     Type: AWS::EC2::Subnet
@@ -48,6 +60,9 @@ Resources:
       AvailabilityZone: ap-northeast-1c
       CidrBlock: 10.0.11.0/24
       VpcId: !Ref VPC      
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-public-subnet-nat-gateway-2      
 
   PrivateSubnet01:
     Type: AWS::EC2::Subnet
@@ -55,6 +70,9 @@ Resources:
       AvailabilityZone: ap-northeast-1a
       CidrBlock: 10.0.2.0/24
       VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-private-subnet-ecs-1      
 
   PrivateSubnet02:
     Type: AWS::EC2::Subnet
@@ -62,6 +80,9 @@ Resources:
       AvailabilityZone: ap-northeast-1c
       CidrBlock: 10.0.3.0/24
       VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-private-subnet-ecs-2    
 
   PrivateSubnetRDS01:
     Type: AWS::EC2::Subnet
@@ -69,6 +90,9 @@ Resources:
       AvailabilityZone: ap-northeast-1a
       CidrBlock: 10.0.4.0/24
       VpcId: !Ref VPC      
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-private-subnet-rds-1            
 
   PrivateSubnetRDS02:
     Type: AWS::EC2::Subnet
@@ -76,6 +100,9 @@ Resources:
       AvailabilityZone: ap-northeast-1c
       CidrBlock: 10.0.5.0/24
       VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-private-subnet-rds-2            
 
   PrivateSubnetVPN01:
     Type: AWS::EC2::Subnet
@@ -83,6 +110,9 @@ Resources:
       AvailabilityZone: ap-northeast-1a
       CidrBlock: 10.0.12.0/24
       VpcId: !Ref VPC            
+      Tags:
+      - Key: Name
+        Value: !Sub ${System}-${Env}-private-subnet-vpn-1            
 
 # ------------------------------------------------------------#
 # Internet Gateway
